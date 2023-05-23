@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])
             return view('admin.dashboard');
         })->name('dashboard');
         Route::resource('projects', ProjectController::class)->parameters([
-            'project' => 'project:slug'
+            'projects' => 'project:slug'
         ]);
     });
 

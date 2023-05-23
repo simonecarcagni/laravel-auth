@@ -22,6 +22,9 @@ class ProjectsTableSeeder extends Seeder
 
             $newProject->title = $faker->sentence(4);
             $newProject->description = $faker->text(250);
+            $newProject->link = $faker->sentence(5);
+            $newProject->project_date = $faker->date('Y_m_d');
+            $newProject->image = $faker->sentence(5);
             $newProject->slug = Str::slug($newProject->title, '-');
             $newProject->save();
         }
