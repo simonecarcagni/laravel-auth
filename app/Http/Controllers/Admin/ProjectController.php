@@ -43,6 +43,12 @@ class ProjectController extends Controller
 
         $form_data['slug'] = Str::slug($request->title, '-');
 
+
+        $checkPost = Project::where('slug', $form_data['slug'])->first();
+        if ($checkPost) {
+            return back()->withInput()->withErrors(['slug' => 'Impossibile creare lo slug per questo progetto, cambia il titolo']);
+        }
+
         $newProject = Project::create($form_data);
 
         return redirect()->route('admin.projects.show', ['project' => $newProject->slug])->with('status', 'Progetto creato con successo!');
@@ -80,7 +86,14 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $form_data = $request->validated();
+
         $form_data['slug'] = Str::slug($request->title, '-');
+
+        $checkPost = Project::where('slug', $form_data['slug'])->where('id', '<>', $project->id)->first();
+
+        if ($checkPost) {
+            return back()->withInput()->withErrors(['slug' => 'Impossibile creare lo slug']);
+        }
 
         $project->update($form_data);
         return redirect()->route('admin.projects.show', ['project' => $project->slug])->with('status', 'Progetto modificato con successo!');
